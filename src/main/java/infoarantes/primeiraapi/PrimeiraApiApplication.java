@@ -1,8 +1,12 @@
 package infoarantes.primeiraapi;
 
 import infoarantes.primeiraapi.domain.Categoria;
+import infoarantes.primeiraapi.domain.Cidade;
+import infoarantes.primeiraapi.domain.Estado;
 import infoarantes.primeiraapi.domain.Produto;
 import infoarantes.primeiraapi.repositories.CategoriaRepository;
+import infoarantes.primeiraapi.repositories.CidadeRepository;
+import infoarantes.primeiraapi.repositories.EstadoRepository;
 import infoarantes.primeiraapi.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +23,13 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private EstadoRepository estadoRepository;
+
+	@Autowired
+	private CidadeRepository cidadeRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(PrimeiraApiApplication.class, args);
 	}
@@ -42,5 +53,20 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+
+		Estado est1 = new Estado(null, "Minas");
+		Estado est2 = new Estado(null, "São Paulo");
+
+		Cidade cid1 = new Cidade(null, "Uberlandia", est1);
+		Cidade cid2 = new Cidade(null, "São Paulo", est2);
+		Cidade cid3 = new Cidade(null, "Campinas", est2);
+
+		est1.getCidades().addAll(Arrays.asList(cid1));
+		est1.getCidades().addAll(Arrays.asList(cid2, cid3));
+
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
+
+
 	}
 }
