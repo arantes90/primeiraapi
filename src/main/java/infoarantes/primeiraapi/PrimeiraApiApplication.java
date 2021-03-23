@@ -1,13 +1,8 @@
 package infoarantes.primeiraapi;
 
-import infoarantes.primeiraapi.domain.Categoria;
-import infoarantes.primeiraapi.domain.Cidade;
-import infoarantes.primeiraapi.domain.Estado;
-import infoarantes.primeiraapi.domain.Produto;
-import infoarantes.primeiraapi.repositories.CategoriaRepository;
-import infoarantes.primeiraapi.repositories.CidadeRepository;
-import infoarantes.primeiraapi.repositories.EstadoRepository;
-import infoarantes.primeiraapi.repositories.ProdutoRepository;
+import infoarantes.primeiraapi.domain.*;
+import infoarantes.primeiraapi.domain.enums.TipoCliente;
+import infoarantes.primeiraapi.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +24,13 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PrimeiraApiApplication.class, args);
@@ -67,6 +69,17 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 
+		Cliente cli1 = new Cliente(null, "Maria", "maria@gmail.com", "333333333333", TipoCliente.PESSOAFISICA);
+
+		cli1.getTelefones().addAll(Arrays.asList("999999999","888888888"));
+
+		Endereco e1 = new Endereco(null, "Rua que Sobe", "1-87", "perto dali", "Geisel", "17032-830", cli1, cid2);
+		Endereco e2 = new Endereco(null, "Rua que Desce", "1-88", "perto de cá", "Geisel", "17032-830", cli1, cid2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
 	}
 }
