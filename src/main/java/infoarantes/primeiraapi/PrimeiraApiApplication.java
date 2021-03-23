@@ -1,6 +1,7 @@
 package infoarantes.primeiraapi;
 
 import infoarantes.primeiraapi.domain.*;
+import infoarantes.primeiraapi.domain.enums.EstadoPagamento;
 import infoarantes.primeiraapi.domain.enums.TipoCliente;
 import infoarantes.primeiraapi.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +32,12 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 
 	public static void main(String[] args) {
@@ -80,6 +88,23 @@ public class PrimeiraApiApplication implements CommandLineRunner {
 
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("24/03/2021 11:15"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("24/03/2021 11:20"), cli1, e2);
+
+		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUIATADO, ped1, 6);
+		ped1.setPagamento(pgto1);
+
+		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("24/03/2021 00:00"), null);
+		ped2.setPagamento(pgto2);
+
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+
+		
 
 	}
 }
