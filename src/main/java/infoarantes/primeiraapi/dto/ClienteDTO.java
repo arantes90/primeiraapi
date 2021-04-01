@@ -1,22 +1,23 @@
 package infoarantes.primeiraapi.dto;
 
-import infoarantes.primeiraapi.domain.Categoria;
+import infoarantes.primeiraapi.domain.Cliente;
 
 import java.io.Serializable;
 
-public class CategoriaDTO implements Serializable {
+public class ClienteDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-
     private String nome;
+    private String email;
 
-    public CategoriaDTO(){}
+    public ClienteDTO(){}
 
-    public CategoriaDTO(Categoria obj){
-        id = obj.getId();
-        nome = obj.getNome();
+    public ClienteDTO(Cliente cliente){
+        id = cliente.getId();
+        nome = cliente.getNome();
+        email = cliente.getEmail();
     }
 
     public Integer getId() {
@@ -33,5 +34,13 @@ public class CategoriaDTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
